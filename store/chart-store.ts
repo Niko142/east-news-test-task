@@ -9,6 +9,7 @@ interface IActions {
 interface IInitialState {
   symbol: CryptoSymbol;
   timeframe: TimeFrame;
+  _hydrate: boolean; // флаг для отслеживания гидратации состояния из localStorage
 }
 
 type ChartStore = IInitialState & IActions;
@@ -16,6 +17,7 @@ type ChartStore = IInitialState & IActions;
 const initialState: IInitialState = {
   symbol: "BTCUSD",
   timeframe: "1M",
+  _hydrate: false,
 };
 
 export const useChartStore = create<ChartStore>()(
@@ -29,6 +31,13 @@ export const useChartStore = create<ChartStore>()(
     {
       name: "chart-state",
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state) state._hydrate = true;
+      },
+      partialize: (state) => ({
+        symbol: state.symbol,
+        timeframe: state.timeframe,
+      }),
     },
   ),
 );
