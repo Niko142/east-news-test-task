@@ -11,3 +11,8 @@ export interface OHLCV {
   close: number;
   volume: number;
 }
+
+export type ChartContext = {
+  symbol: CryptoSymbol;
+  timeframe: TimeFrame;
+};
