@@ -1,10 +1,11 @@
+"use client";
+
 import Image from "next/image";
-import { ChartContext } from "@/types/chart.types";
 import { getImagePath } from "@/utils/format.utils";
+import { useChartStore } from "@/store/chart-store";
 
-type ChartHeaderProps = ChartContext;
-
-export default function ChartHeader({ symbol, timeframe }: ChartHeaderProps) {
+export const ChartHeader = (): React.ReactElement => {
+  const { symbol, timeframe } = useChartStore();
   return (
     <header className="flex shrink-0 items-center justify-between gap-4 border-b-3 border-gray-400/60 px-4 py-3">
       <div className="flex items-center gap-3.5">
@@ -24,4 +25,4 @@ export default function ChartHeader({ symbol, timeframe }: ChartHeaderProps) {
       <span className="text-md">{timeframe}</span>
     </header>
   );
-}
+};

@@ -17,12 +17,10 @@ export async function generateMetadata({
   };
 }
 
-export default async function ChartPage({ params }: ChartPageProps) {
-  const { value } = await params;
-
+export default async function ChartPage() {
   return (
     <div className="h-full w-full">
-      <Chart symbol={value} timeframe="1M" />
+      <Chart />
     </div>
   );
 }
