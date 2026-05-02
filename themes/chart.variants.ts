@@ -1,6 +1,8 @@
 import type { DeepPartial, ChartOptions } from "lightweight-charts";
 
 export const chartTheme: DeepPartial<ChartOptions> = {
+  autoSize: true,
+
   layout: {
     background: { color: "#131722" },
     textColor: "#787B86",
@@ -15,13 +17,19 @@ export const chartTheme: DeepPartial<ChartOptions> = {
     vertLine: { color: "#4C5058", labelBackgroundColor: "#1E2433" },
     horzLine: { color: "#4C5058", labelBackgroundColor: "#1E2433" },
   },
+  leftPriceScale: {
+    visible: false,
+  },
   rightPriceScale: {
     borderColor: "#2A2E39",
+    visible: true,
   },
   timeScale: {
     borderColor: "#2A2E39",
     timeVisible: true,
     secondsVisible: false,
+    fixLeftEdge: true,
+    fixRightEdge: true,
   },
 };
 

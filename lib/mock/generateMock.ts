@@ -2,7 +2,7 @@ import { CryptoSymbol, OHLCV, TimeFrame } from "@/types/chart.types";
 import { createSeededRandom } from "@/utils/random.utils";
 
 import { CHART_CONFIG, SYMBOLS_CONFIG } from "./seeds.config";
-import { TIMEFRAME_SECONDS } from "./timeframes.data";
+import { STEP_BY_TIMEFRAME, TIMEFRAME_RANGE } from "./timeframes.data";
 
 /**
  * Генерация mock OHLCV-данных для визуализации графика
@@ -22,19 +22,21 @@ export const generateMockCandles = (
 ): OHLCV[] => {
   const { seed, basePrice } = SYMBOLS_CONFIG[symbol];
 
-  //   const timeStep = TIMEFRAME_SECONDS[timeframe];
-  //   const startTime =
-  //     Math.floor(Date.now() / 1000) - timeStep * CHART_CONFIG.candleCount;
-  const endTime = Math.floor(Date.now() / 1000);
-  const startTime = endTime - TIMEFRAME_SECONDS[timeframe];
+  const range = TIMEFRAME_RANGE[timeframe];
+  const step = STEP_BY_TIMEFRAME[timeframe];
 
-  const timeStep = TIMEFRAME_SECONDS[timeframe] / CHART_CONFIG.candleCount;
+  const endTime = Math.floor(Date.now() / 1000);
+  const startTime = endTime - range;
+
+  const candleCount = Math.floor(range / step);
 
   const random = createSeededRandom(seed);
   const candles: OHLCV[] = [];
   let currentPrice = basePrice;
 
-  for (let i = 0; i < CHART_CONFIG.candleCount; i++) {
+  for (let i = 0; i < candleCount; i++) {
+    const time = startTime + i * step;
+
     const open = currentPrice;
 
     const change = (random() - 0.5) * 2 * open * CHART_CONFIG.maxChangePercent;
@@ -52,7 +54,7 @@ export const generateMockCandles = (
         random() * (CHART_CONFIG.volume.max - CHART_CONFIG.volume.min));
 
     candles.push({
-      time: startTime + i * timeStep,
+      time,
       open,
       high,
       low,

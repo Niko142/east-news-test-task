@@ -34,17 +34,7 @@ export function useChart({ containerRef, symbol, timeframe }: UseChartProps) {
     chartRef.current = chart;
     seriesRef.current = series;
 
-    const ro = new ResizeObserver(([entry]) => {
-      chart.applyOptions({
-        width: entry.contentRect.width,
-        height: entry.contentRect.height,
-      });
-    });
-
-    ro.observe(containerRef.current);
-
     return () => {
-      ro.disconnect();
       chart.remove();
       chartRef.current = null;
       seriesRef.current = null;
