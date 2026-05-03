@@ -8,7 +8,7 @@ import { TimeFrameSelector } from "./TimeFrameSelector";
 export const ChartHeader = (): React.ReactElement => {
   const { symbol } = useChartStore();
   return (
-    <header className="flex shrink-0 items-center justify-between gap-4 border-b-3 border-gray-400/60 px-4 py-3">
+    <header className="flex shrink-0 flex-col items-center justify-between gap-4 border-b-3 border-gray-400/60 px-4 py-3 md:flex-row">
       <div className="flex items-center gap-3.5">
         <h1 className="text-2xl font-bold">{symbol}</h1>
         <Image
