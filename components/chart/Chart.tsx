@@ -1,20 +1,22 @@
 "use client";
 
-import { useRef } from "react";
 import { useChart } from "@/hooks/useChart";
 import { useChartStore } from "@/store/chart-store";
+import { useOHLCV } from "@/hooks/useOHLCV";
+import { useCandleSeries } from "@/hooks/useCandleSeries";
 import { ChartHeader } from "./ChartHeader";
 
 export const Chart = (): React.ReactElement => {
   const { symbol, timeframe } = useChartStore();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const { candles } = useOHLCV(symbol, timeframe);
+  const { containerRef, chartRef } = useChart();
 
-  useChart({ containerRef, symbol, timeframe });
+  useCandleSeries(chartRef, candles);
 
   return (
-    <div className="flex h-full w-full flex-col gap-2 p-2">
+    <div className="flex h-full w-full flex-col gap-2">
       <ChartHeader />
-      <div className="h-[80vh] min-h-0 w-full">
+      <div className="min-h-0 flex-1">
         <div ref={containerRef} className="h-full w-full" />
       </div>
     </div>

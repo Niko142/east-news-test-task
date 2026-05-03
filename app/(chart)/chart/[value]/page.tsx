@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { Chart } from "@/components/chart";
 import { CryptoSymbol } from "@/types/chart.types";
+import { TradingView } from "@/components/chart/TradingView";
 
 interface ChartPageProps {
   params: Promise<{ value: CryptoSymbol }>;
@@ -19,8 +19,8 @@ export async function generateMetadata({
 
 export default async function ChartPage() {
   return (
-    <div className="h-full w-full">
-      <Chart />
-    </div>
+    <>
+      <TradingView />
+    </>
   );
 }

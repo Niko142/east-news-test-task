@@ -3,58 +3,38 @@
 import { useEffect, useRef } from "react";
 import {
   createChart,
-  type ISeriesApi,
   type IChartApi,
-  type Time,
-  CandlestickSeries,
+  type DeepPartial,
+  type ChartOptions,
 } from "lightweight-charts";
+import { chartTheme } from "@/themes/chart.variants";
 
-import { useOHLCV } from "@/hooks/useOHLCV";
-import { candleTheme, chartTheme } from "@/themes/chart.variants";
-import { ChartContext } from "@/types/chart.types";
-
-interface UseChartProps extends ChartContext {
-  containerRef: React.RefObject<HTMLDivElement | null>;
-}
-
-// Хук для управления графиком на базе lightweight-charts
-export function useChart({ containerRef, symbol, timeframe }: UseChartProps) {
+// Универсальный хук для управления графиком lightweight-charts
+export const useChart = (options?: DeepPartial<ChartOptions>) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
-  const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
 
-  const { candles } = useOHLCV(symbol, timeframe);
-
-  // Инициализация графика
+  // Создаем график с cleanup-очисткой
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const chart = createChart(containerRef.current, chartTheme);
-    const series = chart.addSeries(CandlestickSeries, candleTheme);
-
-    chartRef.current = chart;
-    seriesRef.current = series;
+    chartRef.current = createChart(containerRef.current, {
+      ...chartTheme,
+      autoSize: true,
+    });
 
     return () => {
-      chart.remove();
+      chartRef.current?.remove();
       chartRef.current = null;
-      seriesRef.current = null;
     };
-  }, [containerRef]);
+  }, []);
 
-  // Обновление данных на графике
+  // Обновляем опции графика
   useEffect(() => {
-    if (!seriesRef.current || !chartRef.current) return;
+    if (!chartRef.current || !options) return;
 
-    seriesRef.current.setData(
-      candles.map((c) => ({
-        time: c.time as Time,
-        open: c.open,
-        high: c.high,
-        low: c.low,
-        close: c.close,
-      })),
-    );
+    chartRef.current.applyOptions(options);
+  }, [options]);
 
-    chartRef.current.timeScale().fitContent();
-  }, [candles]);
-}
+  return { containerRef, chartRef };
+};
