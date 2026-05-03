@@ -1,9 +1,9 @@
 "use client";
 
-import { useChart } from "@/hooks/useChart";
-import { useChartStore } from "@/store/chart-store";
-import { useOHLCV } from "@/hooks/useOHLCV";
 import { useCandleSeries } from "@/hooks/useCandleSeries";
+import { useChart } from "@/hooks/useChart";
+import { useOHLCV } from "@/hooks/useOHLCV";
+import { useChartStore } from "@/store/chart-store";
 import { ChartHeader } from "./ChartHeader";
 
 export const Chart = (): React.ReactElement => {

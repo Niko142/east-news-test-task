@@ -1,9 +1,9 @@
 "use client";
 
-import { useChartStore } from "@/store/chart-store";
 import { useOHLCV } from "@/hooks/useOHLCV";
-import { IndicatorStack } from "@/components/indicators/IndicatorStack";
+import { useChartStore } from "@/store/chart-store";
 import { Chart } from "./Chart";
+import { IndicatorStack } from "../indicators";
 
 export function TradingView() {
   const { symbol, timeframe } = useChartStore();

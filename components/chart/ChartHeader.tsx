@@ -22,9 +22,7 @@ export const ChartHeader = (): React.ReactElement => {
         <span className="text-sm">-</span>
       </div>
 
-      {/* Пока что статичный timeframe */}
       <TimeFrameSelector />
-      {/* <span className="text-md">{timeframe}</span> */}
     </header>
   );
 };
